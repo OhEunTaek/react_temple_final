@@ -54,11 +54,12 @@ function Location() {
 		image: markerImage,
 	});
 
+	//Index state가 변경될떄마다 지도인스턴스를 새로 생성
 	useEffect(() => {
 		mapInstance.current = new kakao.maps.Map(container.current, option);
 		marker.setMap(mapInstance.current);
 
-	}, []);
+	}, [Index]); //의존배열에 Index
 	useEffect(() => {
 		Traffic
 			? mapInstance.current.addOverlayMapTypeId(kakao.maps.MapTypeId.TRAFFIC)
@@ -67,21 +68,29 @@ function Location() {
 	return (
 		<Layout name={'Location'}>
 			<div id='map' ref={container}></div>
-			<button onClick={() => setTraffic(!Traffic)}>{Traffic ? 'Traffic ON' : 'Traffic OFF'}</button>
-			{/* 배열의 정보값으로 동적으로 버튼을 생성하고 */}
-			{info.map((el, idx) => {
-				return (
-					<li
-						key={idx}
-						onClick={() => {
-							//각 버튼 클릭시 클릭한 순번으로 Index state변경
-							setIndex(idx);
-						}}
-					>
-						{el.title}
-					</li>
-				);
-			})}
+			<nav>
+				<button onClick={() => setTraffic(!Traffic)}>{Traffic ? 'Traffic ON' : 'Traffic OFF'}</button>
+
+				<ul className='branch'>
+					{info.map((el, idx) => {
+						let isOn = '';
+
+						Index === idx && (isOn = 'on');
+						return (
+							<li
+								key={idx}
+								className={isOn}
+								onClick={() => {
+									setIndex(idx);
+									setTraffic(false);
+								}}
+							>
+								{el.title}
+							</li>
+						);
+					})}
+				</ul>
+			</nav>
 		</Layout>
 	);
 }
