@@ -47,8 +47,7 @@ function Youtube() {
 					);
 				})}
 			</Layout>
-			{Open && <Modal></Modal>}
-			{/* open이 참이면 && 뒤의 부분이 실행 */}
+			{Open && <Modal setOpen={setOpen}></Modal>}
 		</>
 	);
 }
