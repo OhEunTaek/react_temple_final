@@ -6,3 +6,4 @@ function Youtube() {
 		</Layout>
 	);
 }
+export default Youtube;

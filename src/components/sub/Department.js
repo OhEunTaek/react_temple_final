@@ -6,3 +6,4 @@ function Department() {
 		</Layout>
 	);
 }
+export default Department;

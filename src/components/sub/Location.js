@@ -6,3 +6,4 @@ function Location() {
 		</Layout>
 	);
 }
+export default Location;

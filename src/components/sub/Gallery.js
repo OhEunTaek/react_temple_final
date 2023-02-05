@@ -6,3 +6,4 @@ function Gallery() {
 		</Layout>
 	);
 }
+export default Gallery;
