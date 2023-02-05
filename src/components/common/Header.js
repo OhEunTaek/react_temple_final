@@ -1,5 +1,33 @@
 function Header() {
-	return <div>header</div>;
+	return (
+		<header>
+			<div className='inner'>
+				<h1>
+					<a href='#'>LOGO</a>
+				</h1>
+				<ul id='gnb'>
+					<li>
+						<a href='#'>Department</a>
+					</li>
+					<li>
+						<a href='#'>Gallery</a>
+					</li>
+					<li>
+						<a href='#'>Youtube</a>
+					</li>
+					<li>
+						<a href='#'>Community</a>
+					</li>
+					<li>
+						<a href='#'>Location</a>
+					</li>
+					<li>
+						<a href='#'>Membership</a>
+					</li>
+				</ul>
+			</div>
+		</header>
+	);
 }
 
 export default Header;
