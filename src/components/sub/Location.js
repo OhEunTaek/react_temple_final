@@ -48,6 +48,10 @@ function Location() {
 
 	const markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize, imageOption);
 
+	//타입 컨트롤 인스턴스 생성
+	const mapTypeControl = new kakao.maps.MapTypeControl();
+	//줌 컨트롤 인스턴스 생성
+	const zoomControl = new kakao.maps.ZoomControl();
 
 	const marker = new kakao.maps.Marker({
 		position: info[Index].latlng,
@@ -56,9 +60,24 @@ function Location() {
 
 	//Index state가 변경될떄마다 지도인스턴스를 새로 생성
 	useEffect(() => {
+		container.current.innerHTML = '';
 		mapInstance.current = new kakao.maps.Map(container.current, option);
 		marker.setMap(mapInstance.current);
+		//지도 컨트롤 생성
+		mapInstance.current.addControl(mapTypeControl, kakao.maps.ControlPosition.TOPRIGHT);
+		//줌 컨트롤 생성
+		mapInstance.current.addControl(zoomControl, kakao.maps.ControlPosition.LEFT);
+		//지도 위치를 가운데로 변경하는 함수 추가
+		const setCenter = () => {
+			mapInstance.current.setCenter(info[Index].latlng);
+		};
+		//브라우저 리사이즈 이벤트 발생할때마다 실행 말그대로 리사이즈라는 이벤트를 발생할때만
+		window.addEventListener('resize', setCenter);
 
+		//컴포넌트 언마운트시 해당 이벤트리스터 제거
+		return () => {
+			window.removeEventListener('resize', setCenter);
+		};
 	}, [Index]); //의존배열에 Index
 	useEffect(() => {
 		Traffic
