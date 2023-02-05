@@ -14,7 +14,7 @@ activeStyle , activeClassName 속성
 function Header() {
 	const active = { color: 'aqua' };
 	return (
-		<header>
+		<header className={props.type}>
 			<div className='inner'>
 				<h1>
 					<NavLink exact to='/' activeStyle={active}>

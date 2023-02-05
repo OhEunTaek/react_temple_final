@@ -1,5 +1,11 @@
 function Footer() {
-	return <div>footer</div>;
+	return (
+		<footer>
+			<div className='inner'>
+				<p>2022 DCODELAB &copy; ALL RIGHT RESERVED</p>
+			</div>
+		</footer>
+	);
 }
 
 export default Footer;

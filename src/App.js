@@ -1,4 +1,4 @@
-import { Route } from 'react-router-dom';
+import { Route, Switch } from 'react-router-dom';
 
 
 //common
@@ -17,17 +17,29 @@ import Location from './components/sub/Location';
 import Members from './components/sub/Members';
 import Youtube from './components/sub/Youtube';
 
+/*
+스위치를 임포트하고 메인과 서브 헤더 디자인 차별화에 사용
 
+switch는 좀더 자세하게 적은'exact ' 내용을 먼저 채택하고 예외로 그렇지 않은 내용들을 처리
+스타일 적용을 위해 사스에 스타일 추가 및 
+header.js에 클래스네임에 따라서 스타일이 적용되도록 switch로 메인과 서브에 클래스를 부여함 type={} 이라는 프롭으로 클래스이름을 전달함
+*/
 
 function App() {
   return (
     <>
-      <Header />
+      <Switch>
+        <Route exact path='/'>
+          {/* 메인에만 적용되는 header */}
+          <Header type={'main'} />
+          <Visual />
+          <Content />
+        </Route>
 
-      <Route path='/'>
-        <Visual />
-        <Content />
-      </Route>
+        <Route path='/'>
+          <Header type={'sub'} />
+        </Route>
+      </Switch>
 
       <Route path='/department'>
         <Department />
