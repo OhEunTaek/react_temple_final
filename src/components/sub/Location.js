@@ -1,11 +1,20 @@
 import Layout from '../common/Layout';
-import { useRef, useEffect, useState } from 'react';
+import { useRef, useEffect, useState, useMemo } from 'react';
+
+//useMemo : 함수의 리턴값을 메모이제이션
+//useCallback : 함수자체를 메모이제이션
 
 function Location() {
-
 	const { kakao } = window;
-	//각 지점별 정보값 배열로 그룹핑
-	const info = [
+	const [Traffic, setTraffic] = useState(false);
+	const [Index, setIndex] = useState(0);
+	const mapInstance = useRef(null);
+	const option = useRef(null);
+	const info = useRef(null);
+	const container = useRef(null);
+
+	//컴포넌트 재랜더링시 해당 정보값을 매번 변수에 할당하지 않도록 useRef로 참조객체에 저장
+	info.current = [
 		{
 			title: '넥슨 본사',
 			latlng: new kakao.maps.LatLng(37.40211707077346, 127.10344953763003),
@@ -29,61 +38,57 @@ function Location() {
 		},
 	];
 
-
-	const [Traffic, setTraffic] = useState(false);
-
-	//지점 버튼 클릭시 변경할 순번이 담길 state
-	const [Index, setIndex] = useState(0);
-
-	const mapInstance = useRef(null);
-	const container = useRef(null);
-	const option = {
-		center: info[Index].latlng,
+	//지도호출에 필요한 위치정보값도 매번 변수에 할당하지 않도록 참조객체에 저장
+	option.current = {
+		center: info.current[Index].latlng,
 		level: 3,
 	};
 
-	const imageSrc = info[Index].imgUrl;
-	const imageSize = info[Index].imgSize;
-	const imageOption = info[Index].imgPos;
+	const imageSrc = info.current[Index].imgUrl;
+	const imageSize = info.current[Index].imgSize;
+	const imageOption = info.current[Index].imgPos;
 
-	const markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize, imageOption);
+	//마커 인스턴스 리턴값을 useMemo로 메모이제이션 처리 (컴포넌트 재호출시에 해당 값을 기억)
+	const markerImage = useMemo(
+		() => new kakao.maps.MarkerImage(imageSrc, imageSize, imageOption),
+		[imageSrc, imageSize, imageOption, kakao]
+	);
+	//타입 인스턴스 리턴값 메모이제이션
+	const mapTypeControl = useMemo(() => new kakao.maps.MapTypeControl(), [kakao]);
+	//줌컨트롤 인스턴스 리턴값 메모이제이션
+	const zoomControl = useMemo(() => new kakao.maps.ZoomControl(), [kakao]);
+	//마커 인스턴스 리턴값 메모이제이션
+	const marker = useMemo(() => {
+		return new kakao.maps.Marker({
+			position: info.current[Index].latlng,
+			image: markerImage,
+		});
+	}, [kakao, info, Index, markerImage]);
 
-	//타입 컨트롤 인스턴스 생성
-	const mapTypeControl = new kakao.maps.MapTypeControl();
-	//줌 컨트롤 인스턴스 생성
-	const zoomControl = new kakao.maps.ZoomControl();
-
-	const marker = new kakao.maps.Marker({
-		position: info[Index].latlng,
-		image: markerImage,
-	});
-
-	//Index state가 변경될떄마다 지도인스턴스를 새로 생성
 	useEffect(() => {
 		container.current.innerHTML = '';
-		mapInstance.current = new kakao.maps.Map(container.current, option);
+		mapInstance.current = new kakao.maps.Map(container.current, option.current);
 		marker.setMap(mapInstance.current);
-		//지도 컨트롤 생성
 		mapInstance.current.addControl(mapTypeControl, kakao.maps.ControlPosition.TOPRIGHT);
-		//줌 컨트롤 생성
 		mapInstance.current.addControl(zoomControl, kakao.maps.ControlPosition.LEFT);
-		//지도 위치를 가운데로 변경하는 함수 추가
+		mapInstance.current.setZoomable(false);
+
 		const setCenter = () => {
-			mapInstance.current.setCenter(info[Index].latlng);
+			mapInstance.current.setCenter(info.current[Index].latlng);
 		};
-		//브라우저 리사이즈 이벤트 발생할때마다 실행 말그대로 리사이즈라는 이벤트를 발생할때만
 		window.addEventListener('resize', setCenter);
 
-		//컴포넌트 언마운트시 해당 이벤트리스터 제거
 		return () => {
 			window.removeEventListener('resize', setCenter);
 		};
-	}, [Index]); //의존배열에 Index
+	}, [Index, kakao, option, info, marker, mapTypeControl, zoomControl]); //처음 지도 생성시 필요한 모든 정보값들을 의존성 등록
+
 	useEffect(() => {
 		Traffic
 			? mapInstance.current.addOverlayMapTypeId(kakao.maps.MapTypeId.TRAFFIC)
 			: mapInstance.current.removeOverlayMapTypeId(kakao.maps.MapTypeId.TRAFFIC);
-	}, [Traffic]);
+	}, [Traffic, kakao]); //traffic정보 출력할때 필요한 정보값 의존성 등록
+
 	return (
 		<Layout name={'Location'}>
 			<div id='map' ref={container}></div>
@@ -91,7 +96,7 @@ function Location() {
 				<button onClick={() => setTraffic(!Traffic)}>{Traffic ? 'Traffic ON' : 'Traffic OFF'}</button>
 
 				<ul className='branch'>
-					{info.map((el, idx) => {
+					{info.current.map((el, idx) => {
 						let isOn = '';
 
 						Index === idx && (isOn = 'on');
@@ -113,4 +118,5 @@ function Location() {
 		</Layout>
 	);
 }
+
 export default Location;
