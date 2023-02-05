@@ -1,5 +1,12 @@
 function Members() {
-	return <div>Members</div>;
+	return (
+		<section className='content members'>
+			<figure></figure>
+			<div className='inner'>
+				<h1>MEMBERS</h1>
+			</div>
+		</section>
+	);
 }
 
 export default Members;

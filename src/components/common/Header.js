@@ -1,17 +1,8 @@
 import { NavLink } from "react-router-dom";
 /*
-Link 컴포넌트를 이용한 페이지 이동
-link는 a태그처럼 링크로 연결해주지만
-url개념이 아니라 path의 개념
-NavLink 는 Link의 special version으로 
-특정 링크에 적용해서 스타일 넣어줄수 있다
-이것이 link와 navlink의 큰 차이점
-어떤것이 특별한것인가
-activeStyle , activeClassName 속성
-=> 리액트 웹의 현재 url과 to가 가르키는 링크가 일치하면
-활성화되면서 적용되고, 그렇지 않으면 비활성화 된다
+props.type때문에 에러인 상황이다. => function Header(props) { 오류 해결
 */
-function Header() {
+function Header(props) {
 	const active = { color: 'aqua' };
 	return (
 		<header className={props.type}>

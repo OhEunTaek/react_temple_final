@@ -1,5 +1,12 @@
 function Location() {
-	return <div>Location</div>;
+	return (
+		<section className='content location'>
+			<figure></figure>
+			<div className='inner'>
+				<h1>LOCATION</h1>
+			</div>
+		</section>
+	);
 }
 
 export default Location;
