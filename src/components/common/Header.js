@@ -1,6 +1,10 @@
 import { NavLink } from "react-router-dom";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faBars } from '@fortawesome/free-solid-svg-icons';
 /*
-props.type때문에 에러인 상황이다. => function Header(props) { 오류 해결
+npm i --save @fortawesome/fontawesome-svg-core  @fortawesome/free-solid-svg-icons @fortawesome/free-regular-svg-icons @fortawesome/free-brands-svg-icons @fortawesome/react-fontawesome@latest
+이구문으로 폰트어썸 설치 
+
 */
 function Header(props) {
 	const active = { color: 'aqua' };
@@ -44,6 +48,7 @@ function Header(props) {
 						</NavLink>
 					</li>
 				</ul>
+				<FontAwesomeIcon icon={faBars} />
 			</div>
 		</header>
 	);
