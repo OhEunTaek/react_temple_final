@@ -1,8 +1,63 @@
+import { Route } from 'react-router-dom';
+
+/*
+src 폴더안에 compornents 폴더를 만들고 3가지 서브 폴더(common, main, sub)를 만든 뒤, 각 폴더에 맞는 파일.js를 생성한다
+/rfce or /rafce 를 활용해서 각 만들어진 파일 이름대로 컴포넌트 함수를 생성하고 저장한다
+*/
+//common
+import Header from './components/common/Header';
+import Footer from './components/common/Footer';
+
+//main
+import Visual from './components/main/Visual';
+import Content from './components/main/Content';
+
+//sub
+import Community from './components/sub/Community';
+import Department from './components/sub/Department';
+import Gallery from './components/sub/Gallery';
+import Location from './components/sub/Location';
+import Members from './components/sub/Members';
+import Youtube from './components/sub/Youtube';
+
+
+
 function App() {
   return (
-    <div className="App">
-      hello
-    </div>
+    <>
+      <Header />
+
+      <Route path='/'>
+        <Visual />
+        <Content />
+      </Route>
+
+      <Route path='/department'>
+        <Department />
+      </Route>
+
+      <Route path='/youtube'>
+        <Youtube />
+      </Route>
+
+      <Route path='/gallery'>
+        <Gallery />
+      </Route>
+
+      <Route path='/community'>
+        <Community />
+      </Route>
+
+      <Route path='/location'>
+        <Location />
+      </Route>
+
+      <Route path='/members'>
+        <Members />
+      </Route>
+
+      <Footer />
+    </>
   );
 }
 
