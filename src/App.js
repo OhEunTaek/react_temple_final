@@ -17,6 +17,8 @@ import Location from './components/sub/Location';
 import Members from './components/sub/Members';
 import Youtube from './components/sub/Youtube';
 
+import "./scss/style.scss";
+
 /*
 스위치를 임포트하고 메인과 서브 헤더 디자인 차별화에 사용
 
