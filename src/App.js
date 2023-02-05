@@ -6,8 +6,7 @@ import Header from './components/common/Header';
 import Footer from './components/common/Footer';
 
 //main
-import Visual from './components/main/Visual';
-import Content from './components/main/Content';
+import Main from './components/main/Main';
 
 //sub
 import Community from './components/sub/Community';
@@ -20,27 +19,19 @@ import Youtube from './components/sub/Youtube';
 import "./scss/style.scss";
 
 /*
-스위치를 임포트하고 메인과 서브 헤더 디자인 차별화에 사용
+react-router에서 render이용해서 컴포넌트 보여주기
+원치 않는 재마운팅 없이 편리하게 인라인 렌더링이 가능하다.
+render를 사용하면 경로가 일치할 때 호출할 함수를 전달할 수 있다.
+단, 위처럼 render 함수에 아무것도 전달하지 않으면 route 관련 props를 받을 수 없다.
+그러므로 props를 받아와서 복사해서 전달해야한다.
 
-switch는 좀더 자세하게 적은'exact ' 내용을 먼저 채택하고 예외로 그렇지 않은 내용들을 처리
-스타일 적용을 위해 사스에 스타일 추가 및 
-header.js에 클래스네임에 따라서 스타일이 적용되도록 switch로 메인과 서브에 클래스를 부여함 type={} 이라는 프롭으로 클래스이름을 전달함
 */
-
 function App() {
   return (
     <>
       <Switch>
-        <Route exact path='/'>
-          {/* 메인에만 적용되는 header */}
-          <Header type={'main'} />
-          <Visual />
-          <Content />
-        </Route>
-
-        <Route path='/'>
-          <Header type={'sub'} />
-        </Route>
+        <Route exact path='/' component={Main} />
+        <Route path='/' render={() => <Header type={'sub'} />}></Route>
       </Switch>
 
       <Route path='/department'>
