@@ -5,6 +5,7 @@ import Modal from '../common/Modal';
 
 function Youtube() {
 	const [Vids, setVids] = useState([]);
+	const [Open, setOpen] = useState(false);
 	useEffect(() => {
 		const key = 'AIzaSyDq1ThuKd63CGMc178rIvnscNriIww6L4A';
 		const playlist = 'PLHtvRFLN5v-W5bQjvyH8QTdQQhgflJ3nu';
@@ -17,7 +18,7 @@ function Youtube() {
 		});
 	}, []);
 	return (
-		// 모달을 추가함과 동시에 <>  fragment로 감쌈
+
 		<>
 			<Layout name={'Youtube'}>
 				{Vids.map((data) => {
@@ -34,14 +35,20 @@ function Youtube() {
 								<span>{date.split('T')[0]}</span>
 							</div>
 
-							<div className='pic'>
+							<div
+								className='pic'
+								onClick={() => {
+									setOpen(true);
+								}}
+							>
 								<img src={data.snippet.thumbnails.high.url} alt={data.snippet.title} />
 							</div>
 						</article>
 					);
 				})}
 			</Layout>
-			<Modal></Modal>
+			{Open && <Modal></Modal>}
+			{/* open이 참이면 && 뒤의 부분이 실행 */}
 		</>
 	);
 }
