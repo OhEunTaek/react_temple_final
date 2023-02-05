@@ -1,7 +1,10 @@
 import { useRef, useEffect } from 'react';
+import PlugIn from '../../asset/plugIn';
 
 function Btns() {
     const pos = useRef([]);
+    const num = useRef(4); //useRef의 특별한 용도
+    const speed = useRef(500);
     const btnRef = useRef(null);
 
     //세로 위치값 갱신 함수
@@ -29,6 +32,9 @@ function Btns() {
     };
 
     useEffect(() => {
+        //컴포넌트 마운트 되면 상단으로 강제 이동 - smooth하게
+        window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
+
         getPos();
         window.addEventListener('resize', getPos);
         window.addEventListener('scroll', activation);
@@ -44,10 +50,27 @@ function Btns() {
 
     return (
         <ul className='scroll_navi' ref={btnRef}>
-            <li className='on'></li>
-            <li></li>
-            <li></li>
-            <li></li>
+            {/* 참조객체의 num의 갯수대로 빈배열을 임의로 만들고 반복처리 */}
+            {Array(num.current)
+                .fill()
+                .map((_, idx) => {
+                    // 현재 반복도는 순번이 0번째이면 해당 li에만 on클래스를 추가
+                    let isOn = '';
+                    idx === 0 && (isOn = 'on');
+                    return (
+                        <li
+                            key={idx}
+                            className={isOn}
+                            onClick={() => {
+                                new PlugIn(window, {
+                                    prop: 'scroll',
+                                    value: pos.current[idx],
+                                    duration: speed.current,
+                                });
+                            }}
+                        ></li>
+                    );
+                })}
         </ul>
     );
 }
