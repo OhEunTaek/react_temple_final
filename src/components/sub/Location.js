@@ -3,28 +3,58 @@ import { useRef, useEffect, useState } from 'react';
 
 function Location() {
 
+	const { kakao } = window;
+	//각 지점별 정보값 배열로 그룹핑
+	const info = [
+		{
+			title: '넥슨 본사',
+			latlng: new kakao.maps.LatLng(37.40211707077346, 127.10344953763003),
+			imgUrl: `${process.env.PUBLIC_URL}/img/marker1.png`,
+			imgSize: new kakao.maps.Size(232, 99),
+			imgPos: { offset: new kakao.maps.Point(116, 99) },
+		},
+		{
+			title: '올림픽 공원',
+			latlng: new kakao.maps.LatLng(37.5206868, 127.1214941),
+			imgUrl: `${process.env.PUBLIC_URL}/img/marker2.png`,
+			imgSize: new kakao.maps.Size(232, 99),
+			imgPos: { offset: new kakao.maps.Point(116, 99) },
+		},
+		{
+			title: '서울 시청',
+			latlng: new kakao.maps.LatLng(37.5662952, 126.9779451),
+			imgUrl: `${process.env.PUBLIC_URL}/img/marker3.png`,
+			imgSize: new kakao.maps.Size(232, 99),
+			imgPos: { offset: new kakao.maps.Point(116, 99) },
+		},
+	];
+
+
 	const [Traffic, setTraffic] = useState(false);
 	//지도 인스턴스값을 담을 참조객체 생성
 	const mapInstance = useRef(null);
 	const [Location, setLocation] = useState(null);
 	const container = useRef(null);
-	const { kakao } = window;
+	// const { kakao } = window; 위로 올림
 	const option = {
 		center: new kakao.maps.LatLng(37.40211707077346, 127.10344953763003),
 		level: 3,
 	};
 
 
-	const imageSrc = `${process.env.PUBLIC_URL}/img/marker1.png`;
-	const imageSize = new kakao.maps.Size(232, 99);
-	const imageOption = { offset: new kakao.maps.Point(116, 99) };
+	// const imageSrc = `${process.env.PUBLIC_URL}/img/marker1.png`;
+	// const imageSize = new kakao.maps.Size(232, 99);
+	// const imageOption = { offset: new kakao.maps.Point(116, 99) };
+	const imageSrc = info[0].imgUrl;
+	const imageSize = info[0].imgSize;
+	const imageOption = info[0].imgPos;
 
 
 	const markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize, imageOption);
 
 
 	const marker = new kakao.maps.Marker({
-		position: option.center,
+		position: info[0].latlng,
 		image: markerImage,
 	});
 
