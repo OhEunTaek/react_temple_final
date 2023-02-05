@@ -1,7 +1,7 @@
 import { useRef, useEffect } from 'react';
 import PlugIn from '../../asset/plugIn';
 
-function Btns() {
+function Btns({ setScrolled, setPos }) {
     const pos = useRef([]);
     const num = useRef(4); //useRef의 특별한 용도
     const speed = useRef(500);
@@ -12,6 +12,7 @@ function Btns() {
         pos.current = [];
         const secs = btnRef.current.parentElement.querySelectorAll('.myScroll');
         for (const sec of secs) pos.current.push(sec.offsetTop);
+        setPos(pos.current);
     };
 
     //버튼, 박스 활성화 함수
@@ -20,6 +21,7 @@ function Btns() {
         const secs = btnRef.current.parentElement.querySelectorAll('.myScroll');
         const scroll = window.scrollY;
         const base = -window.innerHeight / 3;
+        setScrolled(scroll);
 
         pos.current.forEach((pos, idx) => {
             if (scroll >= pos + base) {

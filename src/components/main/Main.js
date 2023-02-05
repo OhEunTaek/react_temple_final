@@ -4,18 +4,21 @@ import Pics from "./Pics";
 import Vids from "./Vids";
 import Visual from "./Visual";
 import Btns from "./Btns";
-import { useRef, useEffect } from 'react';
+import { useRef, useEffect, useState } from 'react';
 
 function Main() {
-
+    //News컴포넌트로 전달할 Scrolled state생성
+    const [Scrolled, setScrolled] = useState(0);
+    const [Pos, setPos] = useState([]);
     return (
         <main>
             <Header type={'main'} />
             <Visual />
-            <News />
+            <News Scrolled={Scrolled} Pos={Pos} />
             <Pics />
             <Vids />
-            <Btns />
+            {/* Btns에 setScrolled, setPost 스테이트 변경함수 전달 */}
+            <Btns setScrolled={setScrolled} setPos={setPos} />
         </main>
     );
 }
