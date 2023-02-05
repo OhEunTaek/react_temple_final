@@ -31,6 +31,19 @@ function Department() {
 	}, [Members]);
 	return (
 		<Layout name={'Department'}>
+			{Members.map((data, idx) => {
+				// 반복적인 요소 렌더링시에는 무조건 고유의 key prop을 생성해야한다 먼저 키프롭없이 해보고 경고창을 살펴볼것
+				//return <p key={idx}>{data.name}</p>;
+				return (
+					<article key={idx}>
+						<div className='inner'>
+							<div className='pic'>
+								<img src={`${process.env.PUBLIC_URL}/img/${data.pic}`} alt={data.name} />
+							</div>
+						</div>
+					</article>
+				);
+			})}
 		</Layout>
 	);
 }
