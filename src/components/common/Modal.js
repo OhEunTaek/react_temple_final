@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 function Modal(props) {
     useEffect(() => {
         //모달 컴포넌트 마운트시 스크롤기능 비활성화
@@ -14,6 +15,7 @@ function Modal(props) {
             <span
                 className='close'
                 onClick={() => {
+                    //부모로부터 props로 state변경함수를 전달받아서 호출
                     props.setOpen(false);
                 }}
             >
