@@ -1,12 +1,8 @@
+import Layout from '../common/Layout';
 function Members() {
 	return (
-		<section className='content members'>
-			<figure></figure>
-			<div className='inner'>
-				<h1>MEMBERS</h1>
-			</div>
-		</section>
+		<Layout name={'Members'}>
+			<p>Members Content</p>
+		</Layout>
 	);
 }
-
-export default Members;

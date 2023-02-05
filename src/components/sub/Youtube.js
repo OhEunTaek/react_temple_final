@@ -1,12 +1,8 @@
+import Layout from '../common/Layout';
 function Youtube() {
 	return (
-		<section className='content youtube'>
-			<figure></figure>
-			<div className='inner'>
-				<h1>YOUTUBE</h1>
-			</div>
-		</section>
+		<Layout name={'Youtube'}>
+			<p>Youtube Content</p>
+		</Layout>
 	);
 }
-
-export default Youtube;

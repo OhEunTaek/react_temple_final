@@ -1,12 +1,8 @@
+import Layout from '../common/Layout';
 function Gallery() {
 	return (
-		<section className='content gallery'>
-			<figure></figure>
-			<div className='inner'>
-				<h1>GALLERY</h1>
-			</div>
-		</section>
+		<Layout name={'Gallery'}>
+			<p>Gallery Content</p>
+		</Layout>
 	);
 }
-
-export default Gallery;
