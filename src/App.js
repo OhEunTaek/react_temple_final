@@ -1,9 +1,6 @@
 import { Route } from 'react-router-dom';
 
-/*
-src 폴더안에 compornents 폴더를 만들고 3가지 서브 폴더(common, main, sub)를 만든 뒤, 각 폴더에 맞는 파일.js를 생성한다
-/rfce or /rafce 를 활용해서 각 만들어진 파일 이름대로 컴포넌트 함수를 생성하고 저장한다
-*/
+
 //common
 import Header from './components/common/Header';
 import Footer from './components/common/Footer';
