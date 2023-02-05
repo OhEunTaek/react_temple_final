@@ -1,22 +1,24 @@
-import { useRef, useEffect } from 'react';
+import { useRef, useEffect, useCallback } from 'react';
 import PlugIn from '../../asset/plugIn';
 
 function Btns({ setScrolled, setPos }) {
     const pos = useRef([]);
-    const num = useRef(4); //useRef의 특별한 용도
+    const num = useRef(4);
     const speed = useRef(500);
     const btnRef = useRef(null);
 
-    //세로 위치값 갱신 함수
-    const getPos = () => {
+    //세로 위치값 갱신 함수를 useCallback으로 메모이제이션
+    const getPos = useCallback(() => {
+        console.log('getPos');
         pos.current = [];
         const secs = btnRef.current.parentElement.querySelectorAll('.myScroll');
         for (const sec of secs) pos.current.push(sec.offsetTop);
         setPos(pos.current);
-    };
+    }, [setPos]);
 
-    //버튼, 박스 활성화 함수
-    const activation = () => {
+    //버튼, 박스 활성화 함수로 useCallback으로 메모이제이션
+    const activation = useCallback(() => {
+        console.log('activation');
         const btns = btnRef.current.children;
         const secs = btnRef.current.parentElement.querySelectorAll('.myScroll');
         const scroll = window.scrollY;
@@ -31,10 +33,10 @@ function Btns({ setScrolled, setPos }) {
                 secs[idx].classList.add('on');
             }
         });
-    };
+    }, [setScrolled]);
 
     useEffect(() => {
-        //컴포넌트 마운트 되면 상단으로 강제 이동 - smooth하게
+        console.log('useEffect');
         window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
 
         getPos();
@@ -42,13 +44,12 @@ function Btns({ setScrolled, setPos }) {
         window.addEventListener('scroll', activation);
 
         return () => {
-            //window객체는 최상의 전역 객체이기 때문에..
-            //윈도우객체에 이벤트연결시 해당 이벤트가 다른 컴포넌트 페이지에도 실행되는게 아니라면
-            //해당 컴포넌트가 unmount될떄 clean-up함수로 이벤트 연결을 제거
             window.removeEventListener('resize', getPos);
             window.removeEventListener('scroll', activation);
         };
-    }, []);
+    }, [getPos, activation]);
+    //메모이제이션된 2개의 함수를 useEffect의 의존성 배열로 등록
+    //만약 2개의 함수가 메모이제이션 되어 있지 않다면 useEffect는 무한루프에 빠짐
 
     return (
         <ul className='scroll_navi' ref={btnRef}>
