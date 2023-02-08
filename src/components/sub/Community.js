@@ -7,25 +7,33 @@ function Community() {
 	const textarea = useRef(null);
 	const [Posts, setPosts] = useState([]);
 
+	//폼 초기화 함수
 	const resetForm = () => {
 		input.current.value = '';
 		textarea.current.value = '';
 	};
 
+	//글 저장 함수
 	const createPost = () => {
 		if (!input.current.value.trim() || !textarea.current.value.trim()) {
-			resetForm();
 			return alert('제목과 본문을 모두 입력하세요');
 		}
-		// setPosts([...Posts, { title: input.current.value, content: textarea.current.value }]);
 		setPosts([{ title: input.current.value, content: textarea.current.value }, ...Posts]);
 		resetForm();
 	};
+
+	//글 삭제 함수
 	const deletePost = (index) => {
+		setPosts(Posts.filter((_, idx) => idx !== index));
+	};
+
+	//글 수정모드 변경함수
+	const enableUpdate = (index) => {
 		setPosts(
-			//Posts배열을 반복을 돌면서 반복도는 순번이 인수로 전달된 순번의 요소를 제외하고 나머지 값들을 리턴
-			//인수로 전달된 순번의 데이터만 삭제
-			Posts.filter((_, idx) => idx !== index)
+			Posts.map((post, idx) => {
+				if (idx === index) post.enableUpdate = true;
+				return post;
+			})
 		);
 	};
 
@@ -54,15 +62,37 @@ function Community() {
 				{Posts.map((post, idx) => {
 					return (
 						<article key={idx}>
-							<div className='txt'>
-								<h2>{post.title}</h2>
-								<p>{post.content}</p>
-							</div>
+							{post.enableUpdate ? (
+								//수정 모드
+								<>
+									<div className='txt'>
+										<h2>
+											<input type='text' defaultValue={post.title} />
+											<br />
+											<textarea cols='30' rows='3' defaultValue={post.content}></textarea>
+											<br />
+										</h2>
+									</div>
 
-							<div className='btnSet'>
-								<button>EDIT</button>
-								<button onClick={() => deletePost(idx)}>DELETE</button>
-							</div>
+									<div className='btnSet'>
+										<button onClick={() => enableUpdate(idx)}>EDIT</button>
+										<button onClick={() => deletePost(idx)}>DELETE</button>
+									</div>
+								</>
+							) : (
+								//출력 모드
+								<>
+									<div className='txt'>
+										<h2>{post.title}</h2>
+										<p>{post.content}</p>
+									</div>
+
+									<div className='btnSet'>
+										<button onClick={() => enableUpdate(idx)}>EDIT</button>
+										<button onClick={() => deletePost(idx)}>DELETE</button>
+									</div>
+								</>
+							)}
 						</article>
 					);
 				})}
