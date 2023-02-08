@@ -37,7 +37,8 @@
 
 				input[type='text'],
 				input[type='password'],
-				textarea {
+				textarea,
+				select {
 					width: 40%;
 					border: 1px solid #aaa;
 					padding: 6px 10px;

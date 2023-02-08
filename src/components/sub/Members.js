@@ -10,6 +10,7 @@ function Members() {
 		//체크항목 추가
 		interests: null,
 		comments: '',
+		edu: '',
 	};
 	const [Val, setVal] = useState(initVal);
 	const [Err, setErr] = useState({});
@@ -36,11 +37,14 @@ function Members() {
 			errs.gender = '성별을 선택하세요';
 		}
 		//interests항목이 false면 에러객체 추가
-		if (!Val.interests) {
+		if (!value.interests) {
 			errs.interests = '관심사를 하나이상 선택하세요.';
 		}
-		if (Val.comments.length < 20) {
+		if (value.comments.length < 20) {
 			errs.comments = '남기는 말은 20글자 이상 입력하세요';
+		}
+		if (value.edu === '') {
+			errs.edu = '최종 학력을 선택하세요';
 		}
 		return errs;
 	};
@@ -89,6 +93,12 @@ function Members() {
 			if (el.checked) isChecked = true;
 		});
 		setVal({ ...Val, [name]: isChecked });
+	};
+	//select선택 이벤트 함수
+	const handleSelect = (e) => {
+		const { name } = e.target;
+		const isSelected = e.target.value;
+		setVal({ ...Val, [name]: isSelected });
 	};
 	return (
 		<Layout name={'Members'}>
@@ -221,6 +231,22 @@ function Members() {
 									/>
 
 									<span className='err'>{Err.interests}</span>
+								</td>
+							</tr>
+							{/* edu */}
+							<tr>
+								<th scope='row'>
+									<label htmlFor='edu'>EDUCATION</label>
+								</th>
+								<td>
+									<select name='edu' id='edu' onChange={handleSelect}>
+										<option value=''>학력을 선택하세요</option>
+										<option value='elementary school'>초등학교 졸업</option>
+										<option value='middle school'>중학교 졸업</option>
+										<option value='high school'>고등학교 졸업</option>
+										<option value='college'>대학교 졸업</option>
+									</select>
+									<span className='err'>{Err.edu}</span>
 								</td>
 							</tr>
 							{/* comments */}
