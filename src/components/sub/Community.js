@@ -39,6 +39,16 @@ function Community() {
 			})
 		);
 	};
+	//글 출력모드 변경함수
+	const disableUpdate = (index) => {
+		setAllowed(true);
+		setPosts(
+			Posts.map((post, idx) => {
+				if (idx === index) post.enableUpdate = false;
+				return post;
+			})
+		);
+	};
 
 	useEffect(() => {
 		axios.get(`${process.env.PUBLIC_URL}/DB/dummyPosts.json`).then((json) => {
@@ -78,8 +88,8 @@ function Community() {
 									</div>
 
 									<div className='btnSet'>
-										<button onClick={() => enableUpdate(idx)}>EDIT</button>
-										<button onClick={() => deletePost(idx)}>DELETE</button>
+										<button onClick={() => disableUpdate(idx)}>CANCEL</button>
+										<button>UPDATED</button>
 									</div>
 								</>
 							) : (
