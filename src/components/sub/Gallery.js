@@ -1,5 +1,5 @@
 import Layout from '../common/Layout';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import axios from 'axios';
 import Masonry from 'react-masonry-component';
 //npm install --save react-masonry-component 설치
@@ -9,7 +9,9 @@ function Gallery() {
 	// const method_interest = 'flickr.interestingness.getList';
 	// const num = 20;
 	// const url = `${baseURL}&method=${method_interest}&api_key=${key}&per_page=${num}`;
-	const masonryOptions = { transitionDuration: '0.5s' };
+	const masonryOptions = { transitionDuration: '0.5s' }; const frame = useRef(null);
+	const [Items, setItems] = useState([]);
+	const [Loading, setLoading] = useState(true);
 	const getFlickr = async (opt) => {
 		const baseURL = 'https://www.flickr.com/services/rest/?format=json&nojsoncallback=1';
 		const key = 'ae5dbef0587895ed38171fcda4afb648';
@@ -23,8 +25,12 @@ function Gallery() {
 		if (opt.type === 'search') url = `${baseURL}&method=${method_search}&api_key=${key}&per_page=${num}&tags=${opt.tags}`;
 		const result = await axios.get(url);
 		setItems(result.data.photos.photo);
+		setTimeout(() => {
+			frame.current.classList.add('on');
+			setLoading(false);
+		}, 500);
 	};
-	const [Items, setItems] = useState([]);
+
 
 	useEffect(() => {
 		getFlickr({ type: 'interest' });
@@ -37,7 +43,30 @@ function Gallery() {
 
 	return (
 		<Layout name={'Gallery'}>
-			<div className='frame'>
+			<button
+				onClick={() => {
+					frame.current.classList.remove('on');
+					setLoading(true);
+					getFlickr({ type: 'interest' });
+				}}
+			>
+				Interest Gallery
+			</button>
+
+			<button
+				onClick={() => {
+					frame.current.classList.remove('on');
+					setLoading(true);
+					getFlickr({ type: 'search', tags: '하늘' });
+				}}
+			>
+				Search Gallery
+			</button>
+
+			{Loading && <img className='loading' src={`${process.env.PUBLIC_URL}/img/loading.gif`} alt='로딩이미지' />}
+
+			<div className='frame' ref={frame}>
+
 				<Masonry elementType={'div'} options={masonryOptions}>
 					{Items.map((item, idx) => {
 						return (
