@@ -1,26 +1,40 @@
-import Layout from "../common/Layout";
-
-/*
-common 폴더의 Layout.js에서 만든 공통레이아웃을 impot한후
-<Layout>으로 받고, {props.children}에 해당하는 내용인 p태그도 작성한다
-*/
+import Layout from '../common/Layout';
+import { useRef, useState, useEffect } from 'react';
 
 function Community() {
+	const input = useRef(null);
+	const textarea = useRef(null);
+	const [Posts, setPosts] = useState([]);
+
+	const resetForm = () => {
+		input.current.value = '';
+		textarea.current.value = '';
+	};
+
+	const createPost = () => {
+		if (!input.current.value.trim() || !textarea.current.value.trim()) {
+			resetForm();
+			return alert('제목과 본문을 모두 입력하세요');
+		}
+		setPosts([...Posts, { title: input.current.value, content: textarea.current.value }]);
+		resetForm();
+	};
+
+	useEffect(() => {
+		console.log(Posts);
+	}, [Posts]);
+
 	return (
-
 		<Layout name={'Community'}>
-			{/* 부모에서 자식으로 props로 넘길 속성과 값을 지정한것
-			name={'Community'}이것 자체가  props인것 */}
-			<p>Community Content</p>
-
+			<div className='inputBox'>
+				<input type='text' placeholder='제목을 입력하세요' ref={input} />
+				<br />
+				<textarea cols='30' rows='4' placeholder='본문을 입력하세요' ref={textarea}></textarea>
+				<br />
+				<button onClick={resetForm}>CANCEL</button>
+				<button onClick={createPost}>WRITE</button>
+			</div>
 		</Layout>
-
-		// <section className='content community'>
-		// 	<figure></figure>
-		// 	<div className='inner'>
-		// 		<h1>COMMUNITY</h1>
-		// 	</div>
-		// </section>
 	);
 }
 
