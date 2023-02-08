@@ -2,12 +2,35 @@ import Layout from '../common/Layout';
 import { useRef, useState, useEffect } from 'react';
 import axios from 'axios';
 
+/*
+	localstorage: 
+	- 각각의 브라우저에 있는 로컬 저장공간
+	- 문자만 저장 가능 (문자값이 아닌 데이터는 문자화해서 저장)
+	- 5MB 까지만 저장가능한 경량의 저장공간
+	- {key: 문자열형태의 값}
+	- localStorage.setItem(값) - 값저장
+	- localStorage.getItem(key) - 값가져옴
+*/
+
 function Community() {
+	const getLocalData = () => {
+		//처음 컴포넌트 함수가 실행되자마자 로컬스토리지로부터 post키값으로 데이터를 가지고옴
+		const data = localStorage.getItem('post');
+
+		if (data) {
+			//데이터가 있으면 해당 데이터를 객체형식으로 parsing해서 리턴
+			return JSON.parse(data);
+		} else {
+			//데이터가 없으면 빈 배열을 리턴
+			return [];
+		}
+	};
 	const input = useRef(null);
 	const textarea = useRef(null);
 	const inputEdit = useRef(null);
 	const textareaEdit = useRef(null);
-	const [Posts, setPosts] = useState([]);
+	const [Posts, setPosts] = useState(getLocalData());
+
 	const [Allowed, setAllowed] = useState(true);
 
 	//폼 초기화 함수
@@ -72,12 +95,13 @@ function Community() {
 	};
 
 	useEffect(() => {
-		axios.get(`${process.env.PUBLIC_URL}/DB/dummyPosts.json`).then((json) => {
-			setPosts(json.data.posts);
-		});
+		// axios.get(`${process.env.PUBLIC_URL}/DB/dummyPosts.json`).then((json) => {
+		// 	setPosts(json.data.posts);
+		// });
 	}, []);
 	useEffect(() => {
-		console.log(Posts);
+		console.log('update');
+		localStorage.setItem('post', JSON.stringify(Posts));
 	}, [Posts]);
 
 	return (
