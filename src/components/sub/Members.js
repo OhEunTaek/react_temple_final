@@ -6,6 +6,9 @@ function Members() {
 		email: '',
 		pwd1: '',
 		pwd2: '',
+		gender: null,
+		//체크항목 추가
+		interests: null,
 	};
 	const [Val, setVal] = useState(initVal);
 	const [Err, setErr] = useState({});
@@ -30,6 +33,10 @@ function Members() {
 		}
 		if (!value.gender) {
 			errs.gender = '성별을 선택하세요';
+		}
+		//interests항목이 false면 에러객체 추가
+		if (!Val.interests) {
+			errs.interests = '관심사를 하나이상 선택하세요.';
 		}
 		return errs;
 	};
@@ -63,6 +70,20 @@ function Members() {
 	const handleRadio = (e) => {
 		const { name } = e.target;
 		const isChecked = e.target.checked;
+		setVal({ ...Val, [name]: isChecked });
+	};
+	//checkbox 이벤트 함수
+	const handleCheck = (e) => {
+		//초기값을 false로 지정
+		let isChecked = false;
+		const { name } = e.target;
+		//체크박스를 기준으로 다시 부모요소에서 모든 input요소(체크박스)를 찾음
+		const inputs = e.target.parentElement.querySelectorAll('input');
+
+		//체크박스를 반복을 돌면서 하나라도 체크된게 있으면 true값으로 변경후 리턴
+		inputs.forEach((el) => {
+			if (el.checked) isChecked = true;
+		});
 		setVal({ ...Val, [name]: isChecked });
 	};
 	return (
@@ -165,6 +186,37 @@ function Members() {
 										onChange={handleRadio}
 									/>
 									<span className='err'>{Err.gender}</span>
+								</td>
+							</tr>
+							{/* interests */}
+							<tr>
+								<th scope='row'>INTERESTS</th>
+								<td>
+									<label htmlFor='sports'>SPORTS</label>
+									<input
+										type='checkbox'
+										name='interests'
+										id='sports'
+										onChange={handleCheck}
+									/>
+
+									<label htmlFor='music'>MUSIC</label>
+									<input
+										type='checkbox'
+										name='interests'
+										id='music'
+										onChange={handleCheck}
+									/>
+
+									<label htmlFor='game'>GAME</label>
+									<input
+										type='checkbox'
+										name='interests'
+										id='game'
+										onChange={handleCheck}
+									/>
+
+									<span className='err'>{Err.interests}</span>
 								</td>
 							</tr>
 							<tr>
