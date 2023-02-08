@@ -10,6 +10,7 @@ function Gallery() {
 	// const num = 20;
 	// const url = `${baseURL}&method=${method_interest}&api_key=${key}&per_page=${num}`;
 	const masonryOptions = { transitionDuration: '0.5s' };
+	const myId = '197119297@N02';
 	const frame = useRef(null);
 	const input = useRef(null);
 	const [Items, setItems] = useState([]);
@@ -43,7 +44,12 @@ function Gallery() {
 	const showUser = (e) => {
 		getFlickr({ type: 'user', user: e.target.innerText });
 		frame.current.classList.remove('on');
-		setLoading(false);
+		setLoading(true); //변경
+	};
+	const showMine = () => {
+		getFlickr({ type: 'user', user: myId });
+		frame.current.classList.remove('on');
+		setLoading(true);
 	};
 	const showInterest = () => {
 		getFlickr({ type: 'interest' });
@@ -61,13 +67,9 @@ function Gallery() {
 	};
 
 	useEffect(() => {
-		getFlickr({ type: 'interest' });
-		//getFlickr({type: 'search', tags: '하늘'});
-		// axios.get(url).then((json) => {
-		// 	console.log(json.data.photos.photo);
-		// 	setItems(json.data.photos.photo);
-		// });
-	}, []); //dependency array 제거
+		getFlickr({ type: 'user', user: myId });
+
+	}, []);
 
 	return (
 		<Layout name={'Gallery'}>
@@ -79,6 +81,7 @@ function Gallery() {
 
 				<nav>
 					<button onClick={showInterest}>Interest Gallery</button>
+					<button onClick={showMine}>My Gallery</button>
 				</nav>
 			</div>
 
