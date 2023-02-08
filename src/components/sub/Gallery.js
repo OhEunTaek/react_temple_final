@@ -4,11 +4,7 @@ import axios from 'axios';
 import Masonry from 'react-masonry-component';
 //npm install --save react-masonry-component 설치
 function Gallery() {
-	// const baseURL = 'https://www.flickr.com/services/rest/?format=json&nojsoncallback=1';
-	// const key = 'ae5dbef0587895ed38171fcda4afb648';
-	// const method_interest = 'flickr.interestingness.getList';
-	// const num = 20;
-	// const url = `${baseURL}&method=${method_interest}&api_key=${key}&per_page=${num}`;
+
 	const masonryOptions = { transitionDuration: '0.5s' };
 	const myId = '197119297@N02';
 	const frame = useRef(null);
