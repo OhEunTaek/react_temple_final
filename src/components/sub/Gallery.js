@@ -26,6 +26,11 @@ function Gallery() {
 		if (opt.type === 'interest') url = `${baseURL}&method=${method_interest}&api_key=${key}&per_page=${num}`;
 		if (opt.type === 'search') url = `${baseURL}&method=${method_search}&api_key=${key}&per_page=${num}&tags=${opt.tags}`;
 		const result = await axios.get(url);
+		if (result.data.photos.photo.length === 0) {
+			frame.current.classList.add('on');
+			setLoading(false);
+			return alert('해당  검색어의 결과 이미지가 없습니다.');
+		}
 		setItems(result.data.photos.photo);
 		setTimeout(() => {
 			frame.current.classList.add('on');
@@ -42,6 +47,7 @@ function Gallery() {
 
 	const showSearch = () => {
 		const result = input.current.value.trim();
+		if (!result) return alert('검색어를 입력하세요');
 		input.current.value = '';
 		getFlickr({ type: 'search', tags: result });
 		frame.current.classList.remove('on');
@@ -61,7 +67,7 @@ function Gallery() {
 		<Layout name={'Gallery'}>
 			<div className='controls'>
 				<div className='searchBox'>
-					<input type='text' ref={input} placeholder='검색어를 입력하세요' />
+					<input type='text' ref={input} placeholder='검색어를 입력하세요' onKeyUp={(e) => e.key === 'Enter' && showSearch()} />
 					<button onClick={showSearch}>Search</button>
 				</div>
 
