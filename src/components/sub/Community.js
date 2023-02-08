@@ -82,6 +82,7 @@ function Community() {
 
 	//글 삭제 함수
 	const deletePost = (index) => {
+		if (!window.confirm('해당 게시글을 삭제하겠습니까?')) return;
 		setPosts(Posts.filter((_, idx) => idx !== index));
 	};
 	//글 수정함수
