@@ -41,6 +41,13 @@
 					border: 1px solid #aaa;
 					padding: 6px 10px;
 				}
+				label {
+					margin-right: 6px;
+				}
+				input[type='radio'],
+				input[type='checkbox'] {
+					margin-right: 20px;
+				}
 				span.err {
 					font: 11px/1 '돋움';
 					color: hotpink;

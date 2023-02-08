@@ -28,6 +28,9 @@ function Members() {
 		if (value.email.length < 8 || !/@/.test(value.emial)) {
 			errs.email = '이메일은 8글자 이상입력, @를 포함하세요.';
 		}
+		if (!value.gender) {
+			errs.gender = '성별을 선택하세요';
+		}
 		return errs;
 	};
 	//인풋요소에서 onChange이벤트가 발생할때마다 기존 Val state값 전체를 갱신하는 함수
@@ -55,6 +58,12 @@ function Members() {
 		// console.log(err);
 		//check함수가 반환하는 에러객체를 다시 Err state에 옮겨담음  => 바로위의 useEffect의 의존성배열점검
 		setErr(check(Val));
+	};
+	//radio버튼 이벤트 함수
+	const handleRadio = (e) => {
+		const { name } = e.target;
+		const isChecked = e.target.checked;
+		setVal({ ...Val, [name]: isChecked });
 	};
 	return (
 		<Layout name={'Members'}>
@@ -134,6 +143,28 @@ function Members() {
 										onChange={handleChange}
 									/>
 									<span className='err'>{Err.email}</span>
+								</td>
+							</tr>
+							{/* gender */}
+							<tr>
+								<th scope='row'>GENDER</th>
+								<td>
+									<label htmlFor='male'>Male</label>
+									<input
+										type='radio'
+										name='gender'
+										id='male'
+										onChange={handleRadio}
+									/>
+
+									<label htmlFor='female'>FeMale</label>
+									<input
+										type='radio'
+										name='gender'
+										id='female'
+										onChange={handleRadio}
+									/>
+									<span className='err'>{Err.gender}</span>
 								</td>
 							</tr>
 							<tr>
