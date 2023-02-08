@@ -6,6 +6,7 @@ function Community() {
 	const input = useRef(null);
 	const textarea = useRef(null);
 	const [Posts, setPosts] = useState([]);
+	const [Allowed, setAllowed] = useState(true);
 
 	//폼 초기화 함수
 	const resetForm = () => {
@@ -29,6 +30,8 @@ function Community() {
 
 	//글 수정모드 변경함수
 	const enableUpdate = (index) => {
+		if (!Allowed) return;
+		setAllowed(false);
 		setPosts(
 			Posts.map((post, idx) => {
 				if (idx === index) post.enableUpdate = true;
@@ -69,7 +72,7 @@ function Community() {
 										<h2>
 											<input type='text' defaultValue={post.title} />
 											<br />
-											<textarea cols='30' rows='3' defaultValue={post.content}></textarea>
+											<textarea cols='30' rows='4' defaultValue={post.content}></textarea>
 											<br />
 										</h2>
 									</div>
