@@ -93,6 +93,14 @@ function Gallery() {
 										/>
 									</div>
 									<h2>{item.title}</h2>
+									<div className='profile'>
+										<img
+											src={`http://farm${item.farm}.staticflickr.com/${item.server}/buddyicons/${item.owner}.jpg`}
+											alt={item.owner}
+											onError={(e) => e.target.setAttribute('src', 'https://www.flickr.com/images/buddyicon.gif')}
+										/>
+										<span>{item.owner}</span>
+									</div>
 								</div>
 							</article>
 						);
