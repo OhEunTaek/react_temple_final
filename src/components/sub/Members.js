@@ -42,8 +42,8 @@ function Members() {
 	};
 
 	useEffect(() => {
-		console.log(Val);
-	}, [Val]);
+		console.log(Err);
+	}, [Err]);
 	//전송버튼 클릭시 실행되는 전송함수
 	//내부적으로 check함수의 인수로 현재 Val state의 값을 전달하고
 	//반환되는 에러객체 내용을 확인
@@ -51,8 +51,10 @@ function Members() {
 	//에러객체가 비어있으면 인증통과 처리
 	const handleSubmit = (e) => {
 		e.preventDefault();
-		const err = check(Val);
-		console.log(err);
+		// const err = check(Val);
+		// console.log(err);
+		//check함수가 반환하는 에러객체를 다시 Err state에 옮겨담음  => 바로위의 useEffect의 의존성배열점검
+		setErr(check(Val));
 	};
 	return (
 		<Layout name={'Members'}>
@@ -77,6 +79,7 @@ function Members() {
 										value={Val.userid}
 										onChange={handleChange}
 									/>
+									<span className='err'>{Err.userid}</span>
 								</td>
 							</tr>
 
@@ -94,6 +97,7 @@ function Members() {
 										value={Val.pwd1}
 										onChange={handleChange}
 									/>
+									<span className='err'>{Err.pwd1}</span>
 								</td>
 							</tr>
 
@@ -111,6 +115,7 @@ function Members() {
 										value={Val.pwd2}
 										onChange={handleChange}
 									/>
+									<span className='err'>{Err.pwd2}</span>
 								</td>
 							</tr>
 
@@ -128,6 +133,7 @@ function Members() {
 										value={Val.email}
 										onChange={handleChange}
 									/>
+									<span className='err'>{Err.email}</span>
 								</td>
 							</tr>
 							<tr>
