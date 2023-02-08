@@ -16,4 +16,15 @@
 		top: 13vh;
 		left: 100px;
 	}
+	.wrap {
+		width: 100%;
+		display: flex;
+		justify-content: space-between;
+
+		article {
+			width: 30%;
+			padding: 30px;
+			border: 1px solid #333;
+		}
+	}
 }
