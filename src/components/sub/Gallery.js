@@ -9,7 +9,9 @@ function Gallery() {
 	// const method_interest = 'flickr.interestingness.getList';
 	// const num = 20;
 	// const url = `${baseURL}&method=${method_interest}&api_key=${key}&per_page=${num}`;
-	const masonryOptions = { transitionDuration: '0.5s' }; const frame = useRef(null);
+	const masonryOptions = { transitionDuration: '0.5s' };
+	const frame = useRef(null);
+	const input = useRef(null);
 	const [Items, setItems] = useState([]);
 	const [Loading, setLoading] = useState(true);
 	const getFlickr = async (opt) => {
@@ -29,8 +31,22 @@ function Gallery() {
 			frame.current.classList.add('on');
 			setLoading(false);
 		}, 500);
+
 	};
 
+	const showInterest = () => {
+		getFlickr({ type: 'interest' });
+		frame.current.classList.remove('on');
+		setLoading(true);
+	};
+
+	const showSearch = () => {
+		const result = input.current.value.trim();
+		input.current.value = '';
+		getFlickr({ type: 'search', tags: result });
+		frame.current.classList.remove('on');
+		setLoading(true);
+	};
 
 	useEffect(() => {
 		getFlickr({ type: 'interest' });
@@ -43,25 +59,17 @@ function Gallery() {
 
 	return (
 		<Layout name={'Gallery'}>
-			<button
-				onClick={() => {
-					frame.current.classList.remove('on');
-					setLoading(true);
-					getFlickr({ type: 'interest' });
-				}}
-			>
-				Interest Gallery
-			</button>
+			<div className='controls'>
+				<div className='searchBox'>
+					<input type='text' ref={input} placeholder='검색어를 입력하세요' />
+					<button onClick={showSearch}>Search</button>
+				</div>
 
-			<button
-				onClick={() => {
-					frame.current.classList.remove('on');
-					setLoading(true);
-					getFlickr({ type: 'search', tags: '하늘' });
-				}}
-			>
-				Search Gallery
-			</button>
+				<nav>
+					<button onClick={showInterest}>Interest Gallery</button>
+				</nav>
+			</div>
+
 
 			{Loading && <img className='loading' src={`${process.env.PUBLIC_URL}/img/loading.gif`} alt='로딩이미지' />}
 
