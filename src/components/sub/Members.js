@@ -108,6 +108,11 @@ function Members() {
 		const isSelected = e.target.value;
 		setVal({ ...Val, [name]: isSelected });
 	};
+	const handleReset = () => {
+		setSubmit(false);
+		setErr({});
+		setVal(initVal);
+	};
 	return (
 		<Layout name={'Members'}>
 			<form action='' onSubmit={handleSubmit}>
@@ -277,7 +282,7 @@ function Members() {
 							</tr>
 							<tr>
 								<th colSpan='2'>
-									<input type='reset' value='cancel' />
+									<input type='reset' value='cancel' onClick={handleReset} />
 									<input type='submit' value='send' />
 								</th>
 							</tr>
