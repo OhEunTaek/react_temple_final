@@ -22,7 +22,7 @@ function Members() {
 		if (value.pwd1.length < 5 || !eng.test(value.pwd1) || !num.test(value.pwd1) || !spc.test(value.pwd1)) {
 			errs.pwd1 = '비밀번호는 다섯글자 이상, 영문, 숫자, 특수문자를 모두 포함하세요';
 		}
-		if (value.pwd1 !== value.pwd2) {
+		if (!value.pwd2 || value.pwd1 !== value.pwd2) {
 			errs.pwd2 = '두개의 비밀번호를 동일하게 입력하세요';
 		}
 		if (value.email.length < 8 || !/@/.test(value.emial)) {
@@ -30,21 +30,33 @@ function Members() {
 		}
 		return errs;
 	};
+	//인풋요소에서 onChange이벤트가 발생할때마다 기존 Val state값 전체를 갱신하는 함수
 	const handleChange = (e) => {
 		const { name, value } = e.target;
 		//state변경함수로 기본 state값을 deep copy해서
 		//현재 입력하고 있는 값으로 덮어쓰기
 		//객체안의 프로퍼티 명은 대괄호로 감싸야지 변수로 치환가능
 		//setVal({...Val, 'userid': value})
+		//기존 Val객체를 완전복사해서 'userid':value라는 프로퍼티값을 덮어쓰기
 		setVal({ ...Val, [name]: value });
 	};
 
 	useEffect(() => {
 		console.log(Val);
 	}, [Val]);
+	//전송버튼 클릭시 실행되는 전송함수
+	//내부적으로 check함수의 인수로 현재 Val state의 값을 전달하고
+	//반환되는 에러객체 내용을 확인
+	//에러객체가 있는 화면에 에러문구 출력
+	//에러객체가 비어있으면 인증통과 처리
+	const handleSubmit = (e) => {
+		e.preventDefault();
+		const err = check(Val);
+		console.log(err);
+	};
 	return (
 		<Layout name={'Members'}>
-			<form action=''>
+			<form action='' onSubmit={handleSubmit}>
 				<fieldset>
 					<legend className='h'>회원가입 폼 양식</legend>
 					<table border='1'>
@@ -60,6 +72,8 @@ function Members() {
 										name='userid'
 										id='userid'
 										placeholder='아이디를 입력하세요'
+										//인풋요소의 기본기능으로 입력내용을 출력하는것이 아닌
+										//Val스테이트의 userid키값에 있는 내용만 화면에 출력
 										value={Val.userid}
 										onChange={handleChange}
 									/>
@@ -77,6 +91,7 @@ function Members() {
 										name='pwd1'
 										id='pwd1'
 										placeholder='비밀번호를 입력하세요'
+										value={Val.pwd1}
 										onChange={handleChange}
 									/>
 								</td>
@@ -93,6 +108,7 @@ function Members() {
 										name='pwd2'
 										id='pwd2'
 										placeholder='비밀번호를 재입력하세요'
+										value={Val.pwd2}
 										onChange={handleChange}
 									/>
 								</td>
@@ -109,6 +125,7 @@ function Members() {
 										name='email'
 										id='email'
 										placeholder='이메일 주소를 입력하세요'
+										value={Val.email}
 										onChange={handleChange}
 									/>
 								</td>
