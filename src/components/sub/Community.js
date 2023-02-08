@@ -5,6 +5,8 @@ import axios from 'axios';
 function Community() {
 	const input = useRef(null);
 	const textarea = useRef(null);
+	const inputEdit = useRef(null);
+	const textareaEdit = useRef(null);
 	const [Posts, setPosts] = useState([]);
 	const [Allowed, setAllowed] = useState(true);
 
@@ -26,6 +28,25 @@ function Community() {
 	//글 삭제 함수
 	const deletePost = (index) => {
 		setPosts(Posts.filter((_, idx) => idx !== index));
+	};
+	//글 수정함수
+	const updatePost = (index) => {
+		if (!inputEdit.current.value.trim() || !textareaEdit.current.value.trim()) {
+			return alert('수정할 제목과 본문을 모두 입력하세요.');
+		}
+
+		setPosts(
+			Posts.map((post, idx) => {
+				if (idx === index) {
+					post.title = inputEdit.current.value;
+					post.content = textareaEdit.current.value;
+					post.enableUpdate = false;
+				}
+				return post;
+			})
+		);
+
+		setAllowed(true);
 	};
 
 	//글 수정모드 변경함수
@@ -80,16 +101,16 @@ function Community() {
 								<>
 									<div className='txt'>
 										<h2>
-											<input type='text' defaultValue={post.title} />
+											<input type='text' defaultValue={post.title} ref={inputEdit} />
 											<br />
-											<textarea cols='30' rows='4' defaultValue={post.content}></textarea>
+											<textarea cols='30' rows='4' defaultValue={post.content} ref={textareaEdit}></textarea>
 											<br />
 										</h2>
 									</div>
 
 									<div className='btnSet'>
 										<button onClick={() => disableUpdate(idx)}>CANCEL</button>
-										<button>UPDATED</button>
+										<button onClick={() => updatePost(idx)}>UPDATED</button>
 									</div>
 								</>
 							) : (
