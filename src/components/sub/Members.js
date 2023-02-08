@@ -1,6 +1,8 @@
 import Layout from '../common/Layout';
 import { useState, useEffect } from 'react';
+import { useHistory } from 'react-router-dom';
 function Members() {
+	const history = useHistory();
 	const initVal = {
 		userid: '',
 		email: '',
@@ -14,6 +16,7 @@ function Members() {
 	};
 	const [Val, setVal] = useState(initVal);
 	const [Err, setErr] = useState({});
+	const [Submit, setSubmit] = useState(false);
 
 	const check = (value) => {
 		const errs = {};
@@ -30,7 +33,7 @@ function Members() {
 		if (!value.pwd2 || value.pwd1 !== value.pwd2) {
 			errs.pwd2 = '두개의 비밀번호를 동일하게 입력하세요';
 		}
-		if (value.email.length < 8 || !/@/.test(value.emial)) {
+		if (value.email.length < 8 || !/@/.test(value.email)) {
 			errs.email = '이메일은 8글자 이상입력, @를 포함하세요.';
 		}
 		if (!value.gender) {
@@ -69,11 +72,16 @@ function Members() {
 	//에러객체가 비어있으면 인증통과 처리
 	const handleSubmit = (e) => {
 		e.preventDefault();
-		// const err = check(Val);
-		// console.log(err);
-		//check함수가 반환하는 에러객체를 다시 Err state에 옮겨담음  => 바로위의 useEffect의 의존성배열점검
 		setErr(check(Val));
+		setSubmit(true);
 	};
+	useEffect(() => {
+		const len = Object.keys(Err).length;
+		if (len === 0 && Submit) {
+			alert('회원가입이 완료되었습니다.');
+			history.push('/');
+		}
+	}, [Err, Submit, history]);
 	//radio버튼 이벤트 함수
 	const handleRadio = (e) => {
 		const { name } = e.target;
