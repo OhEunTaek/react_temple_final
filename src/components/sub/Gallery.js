@@ -19,12 +19,14 @@ function Gallery() {
 		const key = 'ae5dbef0587895ed38171fcda4afb648';
 		const method_interest = 'flickr.interestingness.getList';
 		const method_search = 'flickr.photos.search';
+		const method_user = 'flickr.people.getPhotos';
 		const num = 20;
 		let url = '';
 		//만약 인수로 전달받은 opt객체의 type이 'interest'이면
 		//interest방식의 url을 만들어서 axios호출
 		if (opt.type === 'interest') url = `${baseURL}&method=${method_interest}&api_key=${key}&per_page=${num}`;
 		if (opt.type === 'search') url = `${baseURL}&method=${method_search}&api_key=${key}&per_page=${num}&tags=${opt.tags}`;
+		if (opt.type === 'user') url = `${baseURL}&method=${method_user}&api_key=${key}&per_page=${num}&user_id=${opt.user}`;
 		const result = await axios.get(url);
 		if (result.data.photos.photo.length === 0) {
 			frame.current.classList.add('on');
@@ -38,7 +40,11 @@ function Gallery() {
 		}, 500);
 
 	};
-
+	const showUser = (e) => {
+		getFlickr({ type: 'user', user: e.target.innerText });
+		frame.current.classList.remove('on');
+		setLoading(false);
+	};
 	const showInterest = () => {
 		getFlickr({ type: 'interest' });
 		frame.current.classList.remove('on');
@@ -99,7 +105,7 @@ function Gallery() {
 											alt={item.owner}
 											onError={(e) => e.target.setAttribute('src', 'https://www.flickr.com/images/buddyicon.gif')}
 										/>
-										<span>{item.owner}</span>
+										<span onClick={showUser}>{item.owner}</span>
 									</div>
 								</div>
 							</article>
