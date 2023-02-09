@@ -55,6 +55,7 @@ function Header(props) {
 						</li>
 					</ul>
 					<FontAwesomeIcon icon={faBars} onClick={() => menu.current.toggle()} />
+					{/* <FontAwesomeIcon icon={faBars} onClick={() => props.menuOpen.current.toggle()} /> */}
 				</div>
 			</header>
 			<Menu ref={menu} />

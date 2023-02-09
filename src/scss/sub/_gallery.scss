@@ -111,6 +111,10 @@
 @media screen and (max-width: $tablet) {
 	.Gallery .frame article {
 		width: 50%;
+		padding-top: 0px;
+		.inner {
+			margin: 0;
+		}
 	}
 }
 

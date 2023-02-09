@@ -31,7 +31,7 @@ const Menu = forwardRef((props, ref) => {
 					onClick={() => setOpen(false)}
 				>
 					<h1>
-						<Link to='/'>DCODELAB</Link>
+						<Link to='/'>LOGO</Link>
 					</h1>
 
 					<ul id='gnbMo'>

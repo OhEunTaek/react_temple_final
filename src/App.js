@@ -1,5 +1,5 @@
 import { Route, Switch } from 'react-router-dom';
-
+import { useRef } from 'react';
 
 //common
 import Header from './components/common/Header';
@@ -28,11 +28,14 @@ render를 사용하면 경로가 일치할 때 호출할 함수를 전달할 수
 
 */
 function App() {
+  const menuOpen = useRef(null);
   return (
     <>
       <Switch>
-        <Route exact path='/' component={Main} />
-        <Route path='/' render={() => <Header type={'sub'} />}></Route>
+        {/* menuOpen참조객체에 담겨있는 toggle함수를 일단 메인컴포넌트에 props로 전달 */}
+        <Route exact path='/' render={() => <Main menuOpen={menuOpen} />} />
+        {/* menuOpen참조객체에 담겨있는 toggle함수를  서브전용 헤더컴포넌트에 props로 전달 */}
+        <Route path='/' render={() => <Header type={'sub'} menuOpen={menuOpen} />} />
       </Switch>
 
       <Route path='/department'>
@@ -60,6 +63,7 @@ function App() {
       </Route>
 
       <Footer />
+      <Menu ref={menuOpen} />
     </>
   );
 }
