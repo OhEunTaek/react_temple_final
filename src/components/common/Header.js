@@ -6,6 +6,8 @@ npm i --save @fortawesome/fontawesome-svg-core  @fortawesome/free-solid-svg-icon
 이구문으로 폰트어썸 설치 
 
 */
+
+//npm i framer-motion@6  6버전 설치
 function Header(props) {
 	const active = { color: 'aqua' };
 	return (
@@ -48,7 +50,7 @@ function Header(props) {
 						</NavLink>
 					</li>
 				</ul>
-				<FontAwesomeIcon icon={faBars} />
+				<FontAwesomeIcon icon={faBars} onClick={() => props.menuOpen.current.toggle()} />
 			</div>
 		</header>
 	);

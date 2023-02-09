@@ -28,3 +28,20 @@
 		}
 	}
 }
+
+@media screen and (max-width: $tablet) {
+	#news {
+		h1 {
+			font: bold 150px/1 'arial';
+		}
+		h2 {
+			font: bold 100px/1 'arial';
+		}
+		.wrap {
+			height: 50%;
+		}
+	}
+}
+
+@media screen and (max-width: $mobile) {
+}

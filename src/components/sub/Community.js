@@ -1,6 +1,6 @@
 import Layout from '../common/Layout';
 import { useRef, useState, useEffect } from 'react';
-import axios from 'axios';
+
 
 /*
 	localstorage: 
