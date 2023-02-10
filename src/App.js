@@ -1,5 +1,9 @@
+
 import { Route, Switch } from 'react-router-dom';
-import { useRef } from 'react';
+import { useRef, useEffect, useCallback } from 'react';
+import { useDispatch } from 'react-redux';
+import { setYoutube } from './redux/action';
+import axios from 'axios';
 
 //common
 import Header from './components/common/Header';
@@ -28,7 +32,26 @@ render를 사용하면 경로가 일치할 때 호출할 함수를 전달할 수
 
 */
 function App() {
+  const dispatch = useDispatch();
   const menuOpen = useRef(null);
+
+  //youbteData를 fetching해서 액션객체로 리듀서에 전달하는 함수
+  const getYoutube = useCallback(() => {
+    const key = 'AIzaSyDq1ThuKd63CGMc178rIvnscNriIww6L4A';
+    const playlist = 'PLHtvRFLN5v-W5bQjvyH8QTdQQhgflJ3nu';
+    const num = 10;
+    const url = `https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&key=${key}&playlistId=${playlist}&maxResults=${num}`;
+
+    axios.get(url).then((json) => {
+      const action = setYoutube(json.data.items);
+      dispatch(action);
+    });
+  }, [dispatch]);
+
+  //루트 컴포넌트가 마운트되면 비동기데이터를 전역에 변경 요청
+  useEffect(() => {
+    getYoutube();
+  }, [getYoutube]);
   return (
     <>
       <Switch>
