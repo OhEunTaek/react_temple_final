@@ -8,8 +8,8 @@ function Youtube() {
 	const [Open, setOpen] = useState(false);
 	const [Index, setIndex] = useState(0);
 	useEffect(() => {
-		const key = 'AIzaSyDq1ThuKd63CGMc178rIvnscNriIww6L4A';
-		const playlist = 'PLHtvRFLN5v-W5bQjvyH8QTdQQhgflJ3nu';
+		const key = 'AIzaSyBjrOKaWRkP5g3P8aW1QsSd1bpFDhUKVZk';
+		const playlist = 'PLR22mOC3bZYoRxVtcK0_J5EOkq7SK9Tv9';
 		const num = 10;
 		const url = `https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&key=${key}&playlistId=${playlist}&maxResults=${num}`;
 
